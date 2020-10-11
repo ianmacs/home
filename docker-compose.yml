@@ -17,3 +17,11 @@ services:
     volumes:
       - ./mosquitto/config:/mosquitto/config
     restart: always
+
+  influxdb:
+    image: influxdb:1.8
+    volumes:
+      - ./influxdb/storage:/var/lib/influxdb
+      - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    environment:
+      - INFLUXDB_DB=home
