@@ -7,7 +7,6 @@ services:
       - "1880:1880"
     volumes:
       - ./nodered/data:/data
-      - .:/data/projects/home
     restart: always
 
   mosquitto:
