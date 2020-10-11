@@ -25,3 +25,12 @@ services:
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     environment:
       - INFLUXDB_DB=home
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/storage:/var/lib/grafana
+    restart: always
