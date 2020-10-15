@@ -2,7 +2,6 @@
  "projects": {
   "projects": {
    "home": {
-    "credentialSecret": "password"
    }
   },
   "activeProject": "home"
