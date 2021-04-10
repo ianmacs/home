@@ -31,21 +31,21 @@ date >setup
 git add setup
 git commit -m 'setup' setup || exit 1
 
-if true
-then git remote origin
-     echo "Git origin removed."
-else echo "Not removing git origin."
-fi
+git remote rm origin
+echo "Git origin removed."
 
-echo "Setting username and password for mosquitto"
+echo "Setting username and password for mosquitto."
 echo "$MQTT_USER_PASSWORD" >mosquitto/config/passwordfile
 docker run --rm -i -v$PWD/mosquitto/config/passwordfile:/passwordfile eclipse-mosquitto mosquitto_passwd -U /passwordfile
 
-echo "Make grafana storage directory world-writable"
+echo "Making grafana storage directory world-writable."
 chmod a+w grafana/storage
 
-echo "Set the influxdb database name to $INFLUXDB_DATABASE"
+echo "Setting the influxdb database name to $INFLUXDB_DATABASE."
 sed -i "/INFLUXDB_DB=/ s/=.*/=$INFLUXDB_DATABASE/" docker-compose.yml
 git commit -a -m "Set the influxdb database name"
+
+echo "Removing setup script."
+git rm setup_my_project.sh && git commit -m "Removing setup script."
 
 docker-compose up -d
