@@ -22,6 +22,11 @@ Treat the whole home automation project generated from this template
 as confidential.  Do not manage it in a public github repository or
 similar.  Do not upload it to any cloud or rented server.
 
+Most shell-based setup steps detailed here are also automated in the
+shell script `setup_my_project.sh`.  Have a look at that script, change
+the values of the first two variables as described, execute and continue
+with the browser-based configuration below.
+
 ## Set up mqtt password
 
 By default, user `home` with password `password` is configured for
@@ -79,7 +84,7 @@ You can now start using node-red through the browser as usual,
 including commiting your changes to git as the projects feature is
 enabled.
 
-# Using mosquitto, influxdb, and grafana
+# Using node-red, mosquitto, influxdb, and grafana
 
 From inside node-red, use host name "mosquitto" to reach the mosquitto
 service with the user name and password configured previously.
@@ -99,22 +104,49 @@ used to display the state and history of your home automation.
 Default credentials are admin/admin, and you have to change the
 password on first login through the browser.
 
+# Node-red details
+
+Node-red is configured to use a project to enable git integration
+and the view of flow differences through the node-red web ui.
+Changes should be committed to git.
+
+The docker-compose volume mounts into the node-red container change
+the directory nesting of this git repository to resemble the usual
+node-red directory structure. This is described here:
+https://discourse.nodered.org/t/showing-visual-node-diff-when-git-repo-is-not-at-project-level/7228/6
+
+As a consequence, all node-red files are visible to the flow diff tool,
+this includes the package.json file and the installed npm modules
+(i.e. third-party nodes): When installing third-party nodes with the
+palette manager, they will show up as numerous untracked files in git.
+This can slow down the web ui significantly.  When this happens, patiently
+use the web ui to commit all the untracked files to git, after that the
+web ui will not suffer from these slow-downs anymore.
+
+The database content of grafana and influxdb are excluded from git
+visibility with .gitignore files.
+
+
 ### Backing up the state of your home automation server
 
-To be tested: If you can afford server downtime during the backup, then
+If you can afford server downtime during the backup, then
 this procedure should work to create a full copy of the current state:
 ```
 docker-compose stop
-rsync -avz . remote-location
+sudo rsync -avz . remote-location
 docker-compose up -d
 ```
 
 where remote-location can be a backup directory on another server, e.g.
-`user@host:/some/path` or a directory on the same server.
+`root@otherserver:/some/path` or a directory on the same server.
+
+It is important to execute the sudo with superuser permissions on both
+sides in order to be able to preserve the files' UIDs and GIDs. 
 
 ## Restore a backed-up state of your home automation server
 
-To be tested:  A backup created as described above can be directly run with
+A backup created as described above can be directly run with
 ```
 docker-compose up -d
 ```
+provided that the original file UID, GID, and permissions were preserved.
