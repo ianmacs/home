@@ -2,7 +2,8 @@
 
 # This script will detach this repository from its origin,
 # set the username and password for MQTT in your project,
-# set the database name for influxdb and delete itself.
+# set the database name for influxdb, make the grafana storage
+# directory writable for the grafana container, and delete itself.
 
 # Change the following settings for your project:
 
@@ -40,6 +41,11 @@ echo "Setting username and password for mosquitto"
 echo "$MQTT_USER_PASSWORD" >mosquitto/config/passwordfile
 docker run --rm -i -v$PWD/mosquitto/config/passwordfile:/passwordfile eclipse-mosquitto mosquitto_passwd -U /passwordfile
 
+echo "Make grafana storage directory world-writable"
+chmod a+w grafana/storage
 
+echo "Set the influxdb database name to $INFLUXDB_DATABASE"
+sed -i "/INFLUXDB_DB=/ s/=.*/=$INFLUXDB_DATABASE/" docker-compose.yml
+git commit -a -m "Set the influxdb database name"
 
 docker-compose up -d
