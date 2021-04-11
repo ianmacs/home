@@ -10,10 +10,14 @@ Combination of node-red, mosquitto, influxdb and grafana using docker-compose.
 Clone the project on your home automation server:
 
 ```
-git clone git@github.com:ianmacs/Home`
+git clone https://github.com/ianmacs/Home
 cd Home
-git remote rm origin
 ```
+
+Most shell-based setup steps detailed here are also automated in the
+shell script `setup_my_project.sh`.  Have a look at that script, change
+the values of the first two variables as described, execute and continue
+with the browser-based configuration below.
 
 The node-red project created from this template will contain passwords
 for mqtt, influxdb, grafana and possibly others either in plain text,
@@ -22,10 +26,9 @@ Treat the whole home automation project generated from this template
 as confidential.  Do not manage it in a public github repository or
 similar.  Do not upload it to any cloud or rented server.
 
-Most shell-based setup steps detailed here are also automated in the
-shell script `setup_my_project.sh`.  Have a look at that script, change
-the values of the first two variables as described, execute and continue
-with the browser-based configuration below.
+```
+git remote rm origin
+```
 
 ## Set up mqtt password
 
