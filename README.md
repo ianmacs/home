@@ -12,12 +12,18 @@ Clone the project on your home automation server:
 ```
 git clone https://github.com/ianmacs/Home
 cd Home
+git config user.name
+git config user.email
 ```
 
-Most shell-based setup steps detailed here are also automated in the
-shell script `setup_my_project.sh`.  Have a look at that script, change
-the values of the first two variables as described, execute and continue
-with the browser-based configuration below.
+If `user.name` or `user.email` produced no output, then set each of them
+to some value, either globally (`--global`) or locally.
+
+Most of the following shell-based setup steps detailed here are also
+automated in the shell script `setup_my_project.sh`.  Have a look at
+that script, change the values of the first two variables as
+described, then execute and continue with the browser-based
+configuration below.
 
 The node-red project created from this template will contain passwords
 for mqtt, influxdb, grafana and possibly others either in plain text,
